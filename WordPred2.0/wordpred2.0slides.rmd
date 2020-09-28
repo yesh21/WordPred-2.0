@@ -1,0 +1,137 @@
+---
+title: "Wordpred2.0slides"
+author: "Yaswanth Pulavarthi"
+date: "9/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning=FALSE, message=FALSE)
+```
+
+## Description 
+
+The goal of this project is just to display that you've gotten used to working with the data and that you are on track to create your prediction algorithm. 
+
+
+
+```{r loading }
+
+library(dplyr)
+library(plyr)
+library(quanteda)
+library(tm)
+library(ggplot2)
+library(NLP)
+library(data.table)
+
+#Datasets
+en_blog <- readLines(con = "C:/Users/Yaswanth Pulavarthi/Documents/final/en_US/en_US.blogs.txt", encoding= "UTF-8", skipNul = T)
+en_news <- readLines(con = "C:/Users/Yaswanth Pulavarthi/Documents/final/en_US/en_US.news.txt", encoding= "UTF-8", skipNul = T)
+en_twitter <- readLines(con = "C:/Users/Yaswanth Pulavarthi/Documents/final/en_US/en_US.twitter.txt", encoding= "UTF-8", skipNul = T)
+
+
+```
+
+## Data Sampling
+Data is so large to run on PC. And to avoid long time waiting, we sampled out 10 percent of data.
+
+
+```{r Sample, echo=FALSE}
+sample_blog_vector <- sample(length(en_blog), length(en_blog) * 0.2)
+sample_news_vector <- sample(length(en_news), length(en_news) * 0.2)
+sample_twitter_vector <- sample(length(en_twitter), length(en_twitter) * 0.2)
+sample_blog <- en_blog[sample_blog_vector]
+sample_news<- en_news[sample_news_vector]
+sample_twitter <- en_twitter[sample_twitter_vector]
+
+
+
+
+```
+
+
+
+```{r shaping data }
+vector <- c(sample_blog, sample_news, sample_twitter)
+corpus <- corpus(vector)
+```
+
+
+
+```{r cleaning }
+cleaning <- tokens(
+    x = tolower(corpus),
+    remove_punct = TRUE,
+    remove_twitter = TRUE,
+    remove_numbers = TRUE,
+    remove_hyphens = TRUE,
+    remove_symbols = TRUE,
+    remove_url = TRUE
+)
+
+```
+
+```{r token}
+stem_words <- tokens_wordstem(cleaning, language = "english")
+
+```
+
+```{r dfm }
+bi_gram <- tokens_ngrams(stem_words, n = 2)
+tri_gram <- tokens_ngrams(stem_words, n = 3)
+quad_gram <- tokens_ngrams(stem_words, n = 4)
+penta_gram <- tokens_ngrams(stem_words, n = 5)
+
+
+uni_DFM <- dfm(stem_words)
+bi_DFM <- dfm(bi_gram)
+tri_DFM <- dfm(tri_gram)
+quad_DFM <- dfm(quad_gram)
+penta_DFM <- dfm(penta_gram)
+
+# Let us trim the N-Grams for faster calculations
+uni_DFM <- dfm_trim(uni_DFM, 3)
+bi_DFM <- dfm_trim(bi_DFM, 3)
+tri_DFM <- dfm_trim(tri_DFM, 3)
+quad_DFM <- dfm_trim(quad_DFM, 3)
+penta_DFM <- dfm_trim(penta_DFM, 3)
+```
+
+```{r wordcount }
+# Create named vectors with counts of words 
+num_uni <- colSums(uni_DFM)
+num_bi <- colSums(bi_DFM)
+num_tri <- colSums(tri_DFM)
+num_quad <- colSums(quad_DFM)
+num_penta <- colSums(penta_DFM)
+
+# Create data tables with individual words as columns
+uni_words <- data.table(One_Word = names(num_uni), Frequency = num_uni)
+
+bi_words <- data.table(
+        One_Word = sapply(strsplit(names(num_bi), "_", fixed = TRUE), '[[', 1),
+        Two_Words = sapply(strsplit(names(num_bi), "_", fixed = TRUE), '[[', 2),
+        Frequency = num_bi)
+
+tri_words <- data.table(
+        One_Word = sapply(strsplit(names(num_tri), "_", fixed = TRUE), '[[', 1),
+        Two_Words = sapply(strsplit(names(num_tri), "_", fixed = TRUE), '[[', 2),
+        Three_Words = sapply(strsplit(names(num_tri), "_", fixed = TRUE), '[[', 3),
+        Frequency = num_tri)
+quad_words <- data.table(
+        One_Word = sapply(strsplit(names(num_quad), "_", fixed = TRUE), '[[', 1),
+        Two_Words = sapply(strsplit(names(num_quad), "_", fixed = TRUE), '[[', 2),
+        Three_Words = sapply(strsplit(names(num_quad), "_", fixed = TRUE), '[[', 3),
+        Four_Words = sapply(strsplit(names(num_quad), "_", fixed = TRUE), '[[', 4),
+        Frequency = num_quad)
+penta_words <- data.table(
+        One_Word = sapply(strsplit(names(num_penta), "_", fixed = TRUE), '[[', 1),
+        Two_Words = sapply(strsplit(names(num_penta), "_", fixed = TRUE), '[[', 2),
+        Three_Words = sapply(strsplit(names(num_penta), "_", fixed = TRUE), '[[', 3),
+        Four_Words = sapply(strsplit(names(num_penta), "_", fixed = TRUE), '[[', 4),
+        Five_Words = sapply(strsplit(names(num_penta), "_", fixed = TRUE), '[[', 5),
+        Frequency = num_penta)
+
+```
+

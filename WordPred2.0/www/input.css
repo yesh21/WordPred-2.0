@@ -15,6 +15,7 @@ body {
   font-size: 1.5rem;
   background-color: #222222;
   color: #fff;
+  
 }
 .dark-mode {
   background-color: white;
@@ -22,14 +23,14 @@ body {
   --main-color: black;
 }
 
-.form__group {
+.form-group {
   position: relative;
   padding: 15px 0 0;
   margin-top: 10px;
   width: 50%;
 }
 
-.form__field {
+.form-control {
   font-family: inherit;
   width: 100%;
   border: 0;
@@ -40,35 +41,39 @@ body {
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;
+    border-radius: 0;
+
 }
-.form__field::placeholder {
+.form-control::placeholder {
   color: transparent;
 }
-.form__field:placeholder-shown ~ .form__label {
+.form-control:placeholder-shown ~ .control-label {
   font-size: 1.3rem;
   cursor: text;
   top: 20px;
 }
 
-.form__label {
+.control-label {
   position: absolute;
-  top: 0;
+  top: -7px;
+  font-size: 20px;
   display: block;
   transition: 0.2s;
-  font-size: 1rem;
+  
   color: #9b9b9b;
 }
 
-.form__field:focus {
+.form-control:focus {
   padding-bottom: 6px;
-  font-weight: 700;
-  border-width: 3px;
+  font-weight: 1000;
+  border-width: 4px;
+  box-shadow: none;
   border-image: linear-gradient(to right, #11998e, #38ef7d);
   border-image-slice: 1;
 }
-.form__field:focus ~ .form__label {
+.form-control:focus ~ .control-label {
   position: absolute;
-  top: 0;
+  top: 20px;
   display: block;
   transition: 0.2s;
   font-size: 1rem;
@@ -77,19 +82,19 @@ body {
 }
 
 /* reset input */
-.form__field:required, .form__field:invalid {
+.form-control:required, .form-control:invalid {
   box-shadow: none;
 }
 
 
 /* The switch - the box around the slider */
-.switch {
+.material-switch{
   position: fixed;
   display: inline-block;
-  width: 60px;
-  height: 34px;
-  top: 2%;
-  right: 2%;
+  width: 600px;
+  height: 304px;
+  top: 4%;
+  right: -45%;
 }
 
 /* Hide default HTML checkbox */
@@ -144,11 +149,11 @@ input:checked + .slider:before {
 }
 
 /* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
+.padding-right {
+  border-radius: 344px;
 }
 
-.slider.round:before {
+.padding-right:before {
   border-radius: 50%;
 }
 
@@ -164,6 +169,20 @@ input:checked + .slider:before {
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;
+}
+
+.btn {
+  width: 30.2%;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: #008CBA;
 }
 
 
