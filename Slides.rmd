@@ -1,0 +1,38 @@
+---
+title: "Word Predictor"
+author: "Yaswanth Pulavarthi"
+date: "9/28/2020"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## App: Word Pred 2.0
+
+App shows the next word predictor with updates from first form of app.
+We used pentagrams, quadgrams, trigrams,bigrams, unigrams, spellcheck fucntion
+
+## Updates
+
+- Added quad gram and penta gram
+- CSS styles to the app using css file
+- Spell check using En_US dict for extra flexibility
+- Dynamic buttons to give a keyboard look
+- Central button for spell check
+- remaining 2 buttons for top n-grams next word predictor
+
+## App Output
+
+
+<img src="C:/Users/Yaswanth Pulavarthi/Documents/WordPred-2.0/Screenshot.png" alt="Italian Trulli">
+
+## Summary
+
+
+github: <https://github.com/yesh21/WordPred-2.0>
+
+shinyapp: <https://yesh21.shinyapps.io/WordPred2/>
+
+Rpubs: <https://rpubs.com/yesh__21>
